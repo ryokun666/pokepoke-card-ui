@@ -64,22 +64,22 @@ export function Scene() {
         {/* シーンの背景色を設定 */}
         <color attach="background" args={["#f5f5f5"]} />
 
-        {/* 環境光：シーン全体を柔らかく照らす（強度を控えめに） */}
-        <ambientLight intensity={0.5} />
+        {/* 環境光：シーン全体を柔らかく照らす */}
+        <ambientLight intensity={0.8} />
 
         {/* メインの平行光源：太陽光のような主光源 */}
         <directionalLight
           position={[5, 8, 5]}
-          intensity={1}
+          intensity={1.2}
           castShadow
           shadow-mapSize={[1024, 1024]}
         />
 
         {/* 補助光源：影の部分を柔らかく照らす */}
-        <directionalLight position={[-5, -2, -5]} intensity={0.1} />
+        <directionalLight position={[-5, -2, -5]} intensity={0.3} />
 
         {/* フィルライト：正面からの柔らかい光 */}
-        <directionalLight position={[0, 0, 8]} intensity={0.3} />
+        <directionalLight position={[0, 0, 8]} intensity={0.5} />
 
         {/* Suspenseは3Dモデルの読み込み中の表示を制御 */}
         <Suspense fallback={null}>
