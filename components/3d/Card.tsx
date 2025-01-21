@@ -24,6 +24,7 @@ export function Card({
   const mesh = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
 
   // テクスチャ読み込み
   const textureLoader = new THREE.TextureLoader();
@@ -38,7 +39,7 @@ export function Card({
 
   // ホバー時の拡大アニメーション
   const { scale } = useSpring({
-    scale: hovered ? 1.1 : 1,
+    scale: hovered || isTouching ? 1.2 : 1,
     config: { mass: 1, tension: 170, friction: 26 },
   });
 
@@ -172,7 +173,16 @@ export function Card({
       rotation={rotation}
       scale={scale}
       onPointerOver={() => !isAnimating && setHovered(true)}
-      onPointerOut={() => !isAnimating && setHovered(false)}
+      onPointerOut={() => !isAnimating && !isTouching && setHovered(false)}
+      onPointerDown={() => setIsTouching(true)}
+      onPointerUp={() => {
+        setIsTouching(false);
+        setHovered(false);
+      }}
+      onPointerLeave={() => {
+        setIsTouching(false);
+        setHovered(false);
+      }}
     >
       {/* フリップアニメーション用のグループ */}
       <a.group rotation-y={flipRotation}>
@@ -183,8 +193,9 @@ export function Card({
             map={cardFront}
             side={THREE.FrontSide}
             transparent={true}
-            metalness={0.1}
-            roughness={0.6}
+            metalness={0.8}
+            roughness={0.5}
+            envMapIntensity={0.4}
           />
         </mesh>
         {/* カード裏面 */}
@@ -194,8 +205,9 @@ export function Card({
             map={cardBack}
             side={THREE.FrontSide}
             transparent={true}
-            metalness={0.1}
-            roughness={0.6}
+            metalness={0}
+            roughness={0.2}
+            envMapIntensity={0.5}
           />
         </mesh>
       </a.group>
